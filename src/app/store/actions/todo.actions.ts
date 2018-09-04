@@ -1,5 +1,12 @@
 import {Todo} from './../models';
 
+export class ValidateTodo {
+  static readonly type = '[TODO] validate';
+
+  constructor(public payload: string) {
+  }
+}
+
 export class AddTodo {
   static readonly type = '[TODO] add';
 

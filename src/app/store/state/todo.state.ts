@@ -1,6 +1,10 @@
 import {State, Action, StateContext, Selector} from '@ngxs/store';
 import {Todo} from '../models';
-import {AddTodo, PopulateTodos, ToggleTodo, ClearCompleted, CompletedAll, DeleteTodo, UpdateTodo, SetFilter} from '../actions';
+import {ValidateTodo, AddTodo, PopulateTodos, ToggleTodo,
+        ClearCompleted, CompletedAll, DeleteTodo, UpdateTodo,
+        SetFilter} from '../actions';
+import { TodoValidationServiceService } from './todo-validation-service.service';
+import { map } from 'rxjs/operators'
 
 
 export class TodoStateModel {
@@ -17,6 +21,8 @@ export class TodoStateModel {
 })
 
 export class TodoState {
+
+  constructor(private validateService: TodoValidationServiceService) {}
 
   @Selector()
   static getTodos(state: TodoStateModel) {
@@ -51,6 +57,13 @@ export class TodoState {
   @Selector()
   static getStateCompleted(state: TodoStateModel) {
     return state.todos.every(todo => todo.completed);
+  }
+
+  @Action(ValidateTodo)
+  validate({dispatch}: StateContext<TodoStateModel>, {payload}: ValidateTodo) {
+    return this.validateService.validate(payload).pipe(
+      map(() => dispatch(new AddTodo(payload)))
+    );
   }
 
   @Action(AddTodo)

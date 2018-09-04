@@ -13,6 +13,7 @@ import {TodoComponent} from './todo/todo.component';
 import {FooterComponent} from './footer/footer.component';
 import {NewTodoComponent} from './new-todo/new-todo.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import { TodoValidationServiceService } from './store/state/todo-validation-service.service';
 
 const routes: Routes = [
   // basic routes
@@ -44,7 +45,7 @@ const routes: Routes = [
       serialize: JSON.stringify
     })*/
   ],
-  providers: [],
+  providers: [TodoValidationServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
